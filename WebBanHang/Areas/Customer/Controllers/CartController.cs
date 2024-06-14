@@ -94,6 +94,7 @@ namespace WebBanHang.Areas.Customer.Controllers
             }
             return Json(new { msg = "error" });
         }
+        
         public IActionResult GetQuantity()
         {      
                 Cart cart = HttpContext.Session.GetJson<Cart>("CART");
@@ -102,6 +103,49 @@ namespace WebBanHang.Areas.Customer.Controllers
                      return Json(new { qty = cart.Quantity });
                 }
             return Json(new { qty = 0 });
+        }
+        public IActionResult GetTotalPrice()
+        {
+            Cart cart = HttpContext.Session.GetJson<Cart>("CART");
+            if (cart != null)
+            {
+                return Json(new { total = cart.Total });
+            }
+            return Json(new { total = 0 });
+        }
+        public IActionResult UpdateToCartAPI(int productId, int qty)
+        {
+            var product = _db.Products.FirstOrDefault(x => x.Id == productId);
+            if (product != null)
+            {
+                Cart cart = HttpContext.Session.GetJson<Cart>("CART");
+                if (cart == null)
+                {
+                    cart = new Cart();
+                }
+                cart.Update(productId, qty);
+                HttpContext.Session.SetJson("CART", cart);
+                return Json(new { msg="Update done", qty = cart.Quantity});
+         
+            }
+            return Json(new { msg = "error" });
+        }
+        public IActionResult DeleteAPI(int productId)
+        {
+            var product = _db.Products.FirstOrDefault(x => x.Id == productId);
+            if (product != null)
+            {
+                Cart cart = HttpContext.Session.GetJson<Cart>("CART");
+                if (cart == null)
+                {
+                    cart = new Cart();
+                }
+                cart.Remove(productId);
+                HttpContext.Session.SetJson("CART", cart);
+                return Json(new { msg = "Deleted" });
+
+            }
+            return Json(new { msg = "error" });
         }
     }
 }

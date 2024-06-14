@@ -21,8 +21,55 @@ $(".addtocart").click(function (evt) {
         }
     })
    // alert(id);
+})
+
+$(".btnUpdate").click(function (evt) {
+    evt.preventDefault();
+    let id = $(this).attr("data-productID")
+    let qty = $(this).closest("form").find(".qty").val();
+    $.ajax({
+        url: "/Customer/Cart/UpdateToCartAPI",
+        data: { "productID": id, "qty":qty },
+        success: function (data) {
+            Swal.fire({
+                title: data.msg,
+                text: "Cập nhật sản phẩm thành công",
+                icon: "success"
+            });
+            showQuantityCart();
+            showTotalPrice();
+        }
+    })
 
 })
+
+//$(".btnremove").click(function (evt) {
+//    evt.preventDefault();
+//    let id = $(this).attr("data-productID")
+//    $.ajax({
+//        url: "/Customer/Cart/DeleteAPI",
+//        data: { "productID": id},
+//        success: function (data) {
+//            Swal.fire({
+//                title: data.msg,
+//                text: "Xoá sản phẩm thành công",
+//                icon: "success"
+//            });
+//            showTotalPrice();
+//        }
+//    })
+//})
+
+
+let showTotalPrice = () => {
+    $.ajax({
+        url: "/Customer/Cart/GetTotalPrice",
+        success: function (data) {       
+            $(".totalprice").text(data.total)
+        }
+    })
+
+}
 
 let showQuantityCart = () => {
     $.ajax({
