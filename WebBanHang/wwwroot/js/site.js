@@ -25,6 +25,7 @@ $(".addtocart").click(function (evt) {
 
 $(".btnUpdate").click(function (evt) {
     evt.preventDefault();
+    alert("tesst");
     let id = $(this).attr("data-productID")
     let qty = $(this).closest("form").find(".qty").val();
     $.ajax({
@@ -64,8 +65,11 @@ $(".btnUpdate").click(function (evt) {
 let showTotalPrice = () => {
     $.ajax({
         url: "/Customer/Cart/GetTotalPrice",
-        success: function (data) {       
-            $(".totalprice").text(data.total)
+        success: function (data) {
+            let num = new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'USD' }).format(
+                data.total,
+            )
+            $(".totalprice").text(num);
         }
     })
 
