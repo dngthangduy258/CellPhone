@@ -43,6 +43,24 @@ $(".btnUpdate").click(function (evt) {
     })
 
 })
+$(".btnPhoneSearch").click(function (evt) {
+    evt.preventDefault();
+    let qty = $(this).closest("form").find(".Phone").val();
+    $.ajax({
+        url: "/Admin/ManagementOrder/SearchPhoneAPI",
+        data: { "Phone": Phone },
+        success: function (data) {
+            Swal.fire({
+                title: data.msg,
+                text: "Cập nhật sản phẩm thành công",
+                icon: "success"
+            });
+            showQuantityCart();
+            showTotalPrice();
+        }
+    })
+
+})
 
 //$(".btnremove").click(function (evt) {
 //    evt.preventDefault();

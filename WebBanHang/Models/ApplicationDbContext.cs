@@ -13,6 +13,9 @@ namespace WebBanHang.Models
         }
         public DbSet<Category> Categories { set; get; }
         public DbSet<Product> Products { set; get; }
+        public DbSet<Order> Orders { set; get; }
+        public DbSet<OrderDetail> OrderDetails { set; get; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //seed data to table Categories
