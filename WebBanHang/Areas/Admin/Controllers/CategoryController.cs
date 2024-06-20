@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using WebBanHang.Models;
 namespace WebBanHang.Controllers
 {
+    [Area("Admin")]
+
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _db;

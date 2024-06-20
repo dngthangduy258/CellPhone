@@ -8,6 +8,8 @@ using WebBanHang.Models;
 
 namespace WebBanHang.Areas.Customer.Controllers
 {
+    [Area("Customer")]
+
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _db;

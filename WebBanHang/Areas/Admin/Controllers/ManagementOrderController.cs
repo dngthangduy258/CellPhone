@@ -8,6 +8,8 @@ using WebBanHang.Helpers;
 
 namespace WebBanHang.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+
     public class ManagementOrderController : Controller
     {
 
