@@ -31,12 +31,24 @@ namespace WebBanHang
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name=DefaultConnection"));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name=DefaultConnection"));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSession();
            // services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+  .AddEntityFrameworkStores<ApplicationDbContext>()
+  .AddDefaultTokenProviders();
             services.AddRazorPages();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.ConfigureApplicationCookie(option =>
+            {
+                option.LoginPath = "/Identity/Account/Login";
+                option.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                option.LogoutPath = "/Identity/Account/Logout";
+            });
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,5 +86,6 @@ namespace WebBanHang
                 endpoints.MapRazorPages();
             });
         }
+        
     }
 }

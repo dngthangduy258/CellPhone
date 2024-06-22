@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebBanHang.Models;
 using WebBanHang.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
+
 namespace WebBanHang.Areas.Customer.Controllers
 {
     [Area("Customer")]

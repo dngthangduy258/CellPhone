@@ -23,3 +23,30 @@ INSERT [dbo].[Products] ([Id], [Name], [Description], [Price], [CategoryId], [Im
 INSERT [dbo].[Products] ([Id], [Name], [Description], [Price], [CategoryId], [ImageUrl]) VALUES (12, N'Ipad Pro 11', NULL, 1250, 2, NULL)
 SET IDENTITY_INSERT [dbo].[Products] OFF
 GO
+
+SET IDENTITY_INSERT [dbo].[Companies] ON 
+
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (1, N'SAMSUNG',1, 1)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (2, N'IPHONE',2, 1)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (3, N'NOKIA',3, 1)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (4, N'XIAOMI', 4,1)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (5, N'OPPO', 5,1)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (6, N'VIVO', 6,1)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (7, N'REALME', 7,1)
+
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (8, N'SAMSUNG',8, 2)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (9, N'IPAD',9, 2)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (10, N'XIAOMI',10, 2)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (11, N'OPPO',11, 2)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder],[CategoryId]) VALUES (12, N'LENOVO',12, 2)
+
+
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder], [CategoryId]) VALUES (13, N'HP',13, 3)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder], [CategoryId]) VALUES (14, N'ASUS',14, 3)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder], [CategoryId]) VALUES (15, N'ACER',15, 3)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder], [CategoryId]) VALUES (16, N'DELL',16, 3)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder], [CategoryId]) VALUES (17, N'LENOVO',17, 3)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder], [CategoryId]) VALUES (18, N'MSI',18, 3)
+INSERT [dbo].[Companies] ([Id], [Name], [DisplayOrder], [CategoryId]) VALUES (19, N'MACBOOK',19, 3)
+
+SET IDENTITY_INSERT [dbo].[Companies] OFF

@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using WebBanHang.Helpers;
 
 namespace WebBanHang.Controllers
 {
     [Area("Admin")]
-
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -185,6 +187,20 @@ public IActionResult Add(Product product, IFormFile ImageUrl)
             TempData["success"] = "Product deleted success";
             //chuyen den action index
             return RedirectToAction("Index");
+        }
+        //public IActionResult GetCompanies()
+        //{
+        //    Cart cart = HttpContext.Session.GetJson<Cart>("CART");
+        //    if (cart != null)
+        //    {
+        //        return Json(new { total = cart.Total });
+        //    }
+        //    return Json(new { total = 0 });
+        //}
+        public JsonResult GetCompanies(int CategoryId)
+        {
+            var brands = _db.Companies.Where(x => x.CategoryId == CategoryId).ToList();
+            return Json(brands);
         }
     }
 }
