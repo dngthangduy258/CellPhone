@@ -29,9 +29,9 @@ namespace WebBanHang.Models
 
         public string ImageUrl { get; set; }
 
-        //public int CompanyId { get; set; }
-        //[ForeignKey("CompanyId")]
-        //public virtual Company Company { set; get; } //khai báo mối kết hợp 1 - nhiều
+        public int CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public virtual Company Company { set; get; } //khai báo mối kết hợp 1 - nhiều
 
 
     }

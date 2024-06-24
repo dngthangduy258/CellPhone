@@ -1,9 +1,12 @@
 ﻿@model Order
 <div class="container">
-    
-    <input  type="text" id="phoneInput" name="Phone" value="" />
-    <button id="btnSearch" class=" btnSearch btn btn-light border text-primary icon-hover-primary">Tìm kiếm</button>
-
+    <div class="form-group">
+        <h3 class="text-info">Enter phone number to search:</h3>
+        <div class="input-group mb-3">
+            <input type="text" id="phoneInput" name="Phone" value="" class="form-control" placeholder="Phone number" aria-label="phone number" aria-describedby="search-addon" />
+            <button id="btnSearch" class="btn btn-outline-primary" type="button">Tìm kiếm</button>
+        </div>
+    </div>
     <table id="ordersTable" class="table d-none">
         <thead>
             <tr>

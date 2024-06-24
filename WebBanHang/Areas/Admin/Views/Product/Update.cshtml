@@ -39,6 +39,12 @@ control">
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group pb-2">
+                <label>Brand</label>
+                <select asp-for="CompanyId" asp-items="@ViewBag.CompanyList" class="form-control" id="Companies">
+                    <option disabled selected>=Select Brand=</option>
+                </select>
+            </div>
+            <div class="form-group pb-2">
                 <label>Product Image</label>
                 <input asp-for="ImageUrl" type="file" class="form-control" />
             </div>
