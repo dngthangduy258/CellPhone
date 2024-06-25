@@ -14,17 +14,16 @@
         <span asp-validation-for="DisplayOrder" class="text-danger"></span>
     </div>
     @*here is code select*@
-    <div class="form-group">
-        <label>Select or enter new choices:</label>
-        <select asp-for="DisplayOrder" class="form-control select2-multiple" multiple="multiple">
-            <option selected="selected">Choice 1</option>
-            <option>Choice 2</option>
-            <option>Choice 3</option>
+    <div class="form-group mb-3">
+        <label>Companies</label>
+        <select id="CompanyIds" asp-items="@ViewBag.CompanyList" name="CompanyIds" class="form-control select2-multiple" multiple="multiple">
         </select>
-        <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+        <span  class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary"> Save </button>
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <input type="hidden" id="SelectedCompanyNamesJson" name="SelectedCompanyNamesJson" />
+
 </form>
 
 @section Scripts
@@ -42,5 +41,23 @@
                 tags: true
             });
         });
+        $(document).ready(function () {
+            $('.select2-multiple').select2({
+                tags: true
+            });
+
+            $('#CompanyIds').change(function () {
+                var selectedCompanies = [];
+
+                $('#CompanyIds option:selected').each(function () {
+                    selectedCompanies.push($(this).text());
+                });
+
+                var selectedNamesJson = JSON.stringify(selectedCompanies); // Chuyển danh sách tên thành chuỗi JSON
+                $('#SelectedCompanyNamesJson').val(selectedNamesJson); // Lưu chuỗi JSON vào hidden field
+            });
+        });
+
     </script>
+
 }

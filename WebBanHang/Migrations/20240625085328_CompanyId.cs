@@ -2,12 +2,20 @@
 
 namespace WebBanHang.Migrations
 {
-    public partial class KhoiTao2 : Migration
+    public partial class CompanyId : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
            
 
+            migrationBuilder.AddColumn<int>(
+                name: "CompanyId",
+                table: "Products",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            
             migrationBuilder.CreateTable(
                 name: "Companies",
                 columns: table => new
@@ -30,17 +38,29 @@ namespace WebBanHang.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_CompanyId",
+                table: "Products",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_CategoryId",
                 table: "Companies",
                 column: "CategoryId");
+
+            migrationBuilder.AddForeignKey(
+    name: "FK_Products_Companies_CompanyId",
+    table: "Products",
+    column: "CompanyId",
+    principalTable: "Companies",
+    principalColumn: "Id",
+    onDelete: ReferentialAction.NoAction);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Companies");
-
           
+
+           
         }
     }
 }

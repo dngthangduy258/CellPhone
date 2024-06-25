@@ -10,8 +10,8 @@ using WebBanHang.Models;
 namespace WebBanHang.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240624102859_AddCompanyId")]
-    partial class AddCompanyId
+    [Migration("20240625085328_CompanyId")]
+    partial class CompanyId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -48,7 +48,30 @@ $(document).ready(function () {
     $('.select2').select2({
         tags: true
     });
+  
 })
+
+$('#CategoryId').change(function () {
+    var categoryId = $(this).val();
+    $.ajax({
+        url: "/Admin/Product/GetCompanies",
+        data: { CategoryId: categoryId },
+        success: function (data) {
+            var brandsSelect = $('#Companies');
+            console.log("1: ", brandsSelect)
+            brandsSelect.empty();
+            $.each(data, function (index, brand) {
+                brandsSelect.append('<option value="' + brand.id + '">' + brand.name + '</option>');
+                console.log("2: ", brand)
+
+            });
+        }
+    });
+});
+
+
+
+
 $(".addtocart").click(function (evt) {
     evt.preventDefault();
     let id = $(this).attr("data-productID")
@@ -88,23 +111,7 @@ $(".btnUpdate").click(function (evt) {
 
 })
 
-$('#CategoryId').change(function () {
-    var categoryId = $(this).val();
-    $.ajax({
-        url: "/Admin/Product/GetCompanies",
-        data: { CategoryId: categoryId },
-        success: function (data) {
-            var brandsSelect = $('#Companies');
-            console.log("1: ", brandsSelect)
-            brandsSelect.empty();
-            $.each(data, function (index, brand) {
-                brandsSelect.append('<option value="' + brand.id + '">' + brand.name + '</option>');
-                console.log("2: ", brand)
 
-            });
-        }
-    });
-});
 
 //$(".btnremove").click(function (evt) {
 //    evt.preventDefault();

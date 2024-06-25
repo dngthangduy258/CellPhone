@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebBanHang.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MoreLinq;
+using Newtonsoft.Json;
 
 namespace WebBanHang.Controllers
 {
@@ -27,21 +30,56 @@ namespace WebBanHang.Controllers
         //Hiển thị form thêm mới chủng loại
         public IActionResult Add()
         {
+            ViewBag.CompanyList = _db.Companies.DistinctBy(x => x.Name).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            });
+
             return View();
         }
         // Xử lý thêm chủng loại mới
-        [HttpPost]
-        public IActionResult Add(Category category)
-        {
-            if (ModelState.IsValid) //kiem tra hop le
-            {
-                //thêm category vào table Categories
-                _db.Categories.Add(category);
-                _db.SaveChanges();
+//        [HttpPost]
+//        public IActionResult Add(Category category)
+//        {
+//            if (ModelState.IsValid) //kiem tra hop le
+//            {
+//                //thêm category vào table Categories
+//                _db.Categories.Add(category);
+//                _db.SaveChanges();
             
-TempData["success"] = "Category inserted success";
-                return RedirectToAction("Index");
+//TempData["success"] = "Category inserted success";
+//                return RedirectToAction("Index");
+//            }
+//            return View();
+//        }
+        [HttpPost]
+        public IActionResult Add(Category category, string selectedCompanyNamesJson)
+        {
+            _db.Categories.Add(category);
+            _db.SaveChanges();
+
+            var lastCompanyId = _db.Companies.Max(c => c.Id);
+
+            if (!string.IsNullOrEmpty(selectedCompanyNamesJson))
+            {
+                List<string> selectedCompanyNames = JsonConvert.DeserializeObject<List<string>>(selectedCompanyNamesJson);
+
+                foreach (var companyName in selectedCompanyNames)
+                {
+                    var company = new Company
+                    {
+                        Name = companyName,
+                        DisplayOrder = lastCompanyId,
+                        CategoryId = category.Id
+                    };
+                    _db.Companies.Add(company);
+                    lastCompanyId += 1;
+                }
+
+                _db.SaveChanges();
             }
+
             return View();
         }
         //Hiển thị form cập nhật chủng loại

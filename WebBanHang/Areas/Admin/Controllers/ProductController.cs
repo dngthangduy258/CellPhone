@@ -85,8 +85,14 @@ public IActionResult Add(Product product, IFormFile ImageUrl)
             {
                 return NotFound();
             }
-            //truyền danh sách thể loại cho View để sinh ra điều khiển DropDownList
+            // truyền danh sách thể loại cho View để sinh ra điều khiển DropDownList
             ViewBag.CategoryList = _db.Categories.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            });
+            // truyền danh sách brand cho View để sinh ra điều khiển DropDownList tương ứng với CategoryId của product
+            ViewBag.CompanyList = _db.Companies.Where(x => x.CategoryId == product.CategoryId).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
@@ -127,6 +133,7 @@ public IActionResult Add(Product product, IFormFile ImageUrl)
                 existingProduct.Description = product.Description;
                 existingProduct.Price = product.Price;
                 existingProduct.CategoryId = product.CategoryId;
+                existingProduct.CompanyId = product.CompanyId;
                 existingProduct.ImageUrl = product.ImageUrl;
                 _db.SaveChanges();
                 TempData["success"] = "Product updated success";
@@ -202,5 +209,6 @@ public IActionResult Add(Product product, IFormFile ImageUrl)
             var brands = _db.Companies.Where(x => x.CategoryId == CategoryId).ToList();
             return Json(brands);
         }
+        
     }
 }
