@@ -1,0 +1,136 @@
+﻿<style>
+    .icon-hover:hover {
+        border-color: #3b71ca !important;
+        background-color: white !important;
+        color: #3b71ca !important;
+    }
+
+        .icon-hover:hover i {
+            color: #3b71ca !important;
+        }
+</style>
+@model Product
+<!-- content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row gx-5">
+            <aside class="col-lg-6">
+                <div class="border rounded-4 mb-3 d-flex justify-content-center">
+                    <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image" href="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/big.webp">
+                        <img style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit" src="/@Model.ImageUrl" alt="..." />
+                    </a>
+                </div>
+              
+            </aside>
+            <main class="col-lg-6 d-flex flex-column">
+                <div class="ps-lg-3">
+                    <h4 class="title text-dark">
+                        @Model.Name
+                    </h4>                 
+
+                    <div class="mb-3">
+                        <span class="h5">@Html.FormatValue(Model.Price, "${0:#,##0}")</span>
+                    </div>
+
+                    <p>
+                        @Model.Description
+                    </p>
+
+                    <div class="row">
+                        <dt class="col-3">Loại sản phẩm:</dt>
+                        <dd id="categoryName" class="col-9"></dd>
+
+                        <dt class="col-3">Hãng:</dt>
+                        <dd id="companyName" class="col-9"></dd>
+                    </div>
+
+                    <hr />
+                    
+                </div>
+                <a class="addtocart btn btn-outline-dark mt-auto w-25 mb-3" value="@Model.Id" data-productID="@Model.Id" asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@Model.Id" id="productID">
+                    Add To Cart
+                </a>
+            </main>
+        </div>
+    </div>
+</section>
+<!-- content -->
+
+<section class="bg-light border-top py-4">
+    <div class="container">
+        <div class="row gx-4">              
+            <div class="">
+                <div class="px-0 border rounded-2 shadow-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm tương tự:</h5>
+                            <div class="row similar">
+                                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Footer -->
+
+<!-- Footer -->
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Lấy id sản phẩm từ element HTML
+            var productId = $('#productID').data('productid');
+            $.ajax({
+                url: '/Customer/Home/GetProductDetails', // URL tới hàm GetProductDetails trong ProductController
+                type: 'GET',
+                data: { id: productId }, // Gửi ID sản phẩm như là một parameter
+                success: function (data) {
+                    // Trong hàm success, sử dụng response để lấy dữ liệu và thêm nó vào trang HTML
+                    $('#categoryName').text(data.categoryName);
+                    $('#companyName').text(data.companyName);
+                },
+                error: function (response) {
+                    console.log('Error: ', response);
+                }
+            });
+            $.ajax({
+                url: '/Customer/Home/GetRelatedProducts',
+                type: 'GET',
+                data: { id: productId },
+                success: function (result) {
+                    // Hiển thị các sản phẩm liên quan.
+                    $(".similar-product").remove();
+
+                    // Thêm các sản phẩm tương tự vào trang
+                    result.forEach(function (product) {
+                        console.log(product)
+                        var productHtml = `
+                                    <div class="col-md-6 mb-3 px-0 border rounded-2 shadow-0 similar-product d-flex align-items-center">
+                                <a href="#" class="me-3">
+                                    <img src="/` + product.imageUrl + `" style="min-width: 96px; height: 110px;" class="img-md img-thumbnail" />
+                                </a>
+                                <div class="info">
+                                    <a href="#" class="nav-link mb-1">` + product.name + `</a>
+                                    <strong class="text-dark">$` + product.price + `</strong>
+                                </div>
+                            </div>`;
+
+                        $(".similar").append(productHtml);
+                    });
+                }
+            });
+        });
+
+    </script>
+
+}

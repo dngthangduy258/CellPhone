@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,7 +22,9 @@
 <body>
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">
+            <img style="height:45px" src="~/images/dnkstore2.png" />
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -33,29 +37,30 @@
 
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Introduce</a>
 
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
 
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagementOrder" asp-action="Index">Orders Management</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
-                </li>
+                @inject SignInManager<ApplicationUser> SignInManager
+                @inject UserManager<ApplicationUser> UserManager
+
+                @{
+                    var user = UserManager.GetUserAsync(User).Result;
+                    var isAdmin = SignInManager.IsSignedIn(User) && User.IsInRole("Admin");
+                }@if (isAdmin)
+                {
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagementOrder" asp-action="Index">Orders Management</a>
+                    </li>
+                }
             </ul>
 
             <partial name="_LoginPartial" />
@@ -65,7 +70,7 @@
             </form>
             <form class="ml-2 d-flex">
                 <button class="btn btn-outline-dark" asp-action="Index" asp-controller="Cart" type="submit">
-                    <i class="bi-cart-fill me-1"></i>
+                    <i class="bi-cart-fill"></i>
                     Cart
                     <span class="showcart badge bg-dark text-white ms-1 rounded-pill">0</span>
                 </button>
@@ -73,13 +78,30 @@
         </div>
     </nav>
     <!-- Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Shop in style</h1>
-                <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+    <header class="bg-dark position-relative">
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="~/images/slide/720x220-720x220-106.png" class="d-block w-100" alt="Slide 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="~/images/slide/720x220-720x220-49.png" class="d-block w-100" alt="Slide 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="~/images/slide/iphone-14--15-pro-max---1--2--720x220-1.png" class="d-block w-100" alt="Slide 2">
+                </div>
+                <!-- Thêm thêm các carousel-item cho các hình ảnh khác -->
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
+      
     </header>
     <!-- Section-->
     @RenderBody()
@@ -103,3 +125,12 @@
 
 </body>
 </html>
+
+    <script>
+    // Kích hoạt Carousel
+    var myCarousel = document.querySelector('#carouselExample');
+    var carousel = new bootstrap.Carousel(myCarousel, {
+        interval: 2500, // Thời gian chuyển tiếp giữa các slide (ms)
+        wrap: true // Cho phép wrap qua lại giữa các slide
+    });
+    </script>

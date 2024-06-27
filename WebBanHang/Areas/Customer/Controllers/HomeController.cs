@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using WebBanHang.Migrations;
 
 namespace WebBanHang.Controllers
 {
@@ -25,27 +26,88 @@ namespace WebBanHang.Controllers
             _db = db;
         }
 
-        public IActionResult Index(int ?page)
+        public IActionResult Index()
 
         {  //var productList = _db.Products.Include(x => x.Category).ToList();
-        //    return View(productList);
-            var pageIndex = (int)(page != null ? page : 1);
-            var pageSize = 8;
+           //    return View(productList);
 
             var dsSanPham = _db.Products.Include(x => x.Category).ToList();
+            var result = dsSanPham
+            .GroupBy(x => x.Category.Name)
+            .SelectMany(g => g.Take(8))
+            .ToList();
 
-            var pageSum = dsSanPham.Count() / pageSize + (dsSanPham.Count() % pageSize > 0 ? 1 : 0);
-
-            ViewBag.PageSum = pageSum;
-            ViewBag.PageIndex = pageIndex;
-            return View(dsSanPham.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList());
+            return View(dsSanPham.ToList());
         }
+        public IActionResult IndexByCategoryAndCompany(int companyId)
+        {
+            var products = _db.Products.Where(p => p.CompanyId == companyId).ToList();
 
+            var company = _db.Companies.FirstOrDefault(c => c.Id == companyId);
+            if (company != null)
+            {
+                ViewBag.CompanyName = company.Name;
+            }
+            else
+            {
+                ViewBag.CompanyName = "Unknown";
+            }
+
+            return View(products);
+        }
         public IActionResult Privacy()
         {
             return View();
         }
+        [HttpGet]
 
-      
+        public IActionResult ProductDetail(int id)
+        {
+            // Cần sửa đổi dòng này nếu bạn không sử dụng Entity Framework hoặc cấu trúc database khác
+            var product = _db.Products.FirstOrDefault(p => p.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+        [HttpGet]
+        public JsonResult GetProductDetails(int id)
+        {
+            var product = _db.Products.FirstOrDefault(p => p.Id == id);
+
+            var category = _db.Categories.FirstOrDefault(c => c.Id == product.CategoryId);
+            var company = _db.Companies.FirstOrDefault(c => c.Id == product.CompanyId);
+
+            // Trả về JSON
+            return Json(new
+            {
+                CategoryName = category.Name,
+                CompanyName = company.Name
+            });
+        }
+        [HttpGet]
+        public JsonResult GetRelatedProducts(int id)
+        {
+            var product = _db.Products.FirstOrDefault(p => p.Id == id);
+
+            var relatedProducts = _db.Products
+              .Where(p => p.CategoryId == product.CategoryId && p.CompanyId == product.CompanyId && p.Id != product.Id)
+              .Take(4)
+              .Select(p => new {
+                  Name = p.Name,
+                  CategoryId = p.CategoryId,
+                  CompanyId = p.CompanyId,
+                  Price = p.Price,
+                  ImageUrl = p.ImageUrl
+              })
+              .ToList();
+
+            // return as JSON
+            return Json(relatedProducts);
+        }
+
     }
 }

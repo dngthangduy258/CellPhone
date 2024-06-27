@@ -1,38 +1,29 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-@model List<Product>
-@{
-    var productsWithCategory1 = Model.Where(x => x.CategoryId == 1).ToList();
-    var productsWithCategory2 = Model.Where(x => x.CategoryId == 2).ToList();
-    var productsWithCategory3 = Model.Where(x => x.CategoryId == 3).ToList();
-}
-@*add code here*@
+﻿@model List<Product>
 <nav class="container navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <ul class="navbar-nav">
             <li class="nav-item dropdown mr-4">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Điện thoại</a>
                 <div class="dropdown-menu row">
-                    <a class="col-4" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="1">
+                    <a class="" style="max-width:40px" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="1">
                         <img class="card-img-top" src="~/images/brandlogo/samsungnew-220x48-1.png" alt="..." />
                     </a>
-                    <a class="col-4" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="2">
+                    <a class="" style="max-width:40px" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="2">
                         <img class="card-img-top" src="~/images/brandlogo/logo-iphone-220x48.png" alt="..." />
                     </a>
-                    <a class="col-4" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="3">
+                    <a class="" style="max-width:40px" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="3">
                         <img class="card-img-top" src="~/images/brandlogo/nokia42-b_21.jpg" alt="..." />
                     </a>
-                    <a class="col-4" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="4">
+                    <a class="" style="max-width:40px" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="4">
                         <img class="card-img-top" src="~/images/brandlogo/logo-xiaomi-220x48-5.png" alt="..." />
                     </a>
-                    <a class="col-4" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="5">
+                    <a class="" style="max-width:40px" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="5">
                         <img class="card-img-top" src="~/images/brandlogo/oppo42-b_5.jpg" alt="..." />
                     </a>
-                    <a class="col-4" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="6">
+                    <a class="" style="max-width:40px" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="6">
                         <img class="card-img-top" src="~/images/brandlogo/vivo-logo-220-220x48-3.png" alt="..." />
                     </a>
-                    <a class="col-4" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="7">
+                    <a class="" style="max-width:40px" asp-controller="Home" asp-action="IndexByCategoryAndCompany" asp-route-companyId="7">
                         <img class="card-img-top" src="~/images/brandlogo/realme42-b_37.png" alt="..." />
                     </a>
                 </div>
@@ -90,31 +81,28 @@
 </nav>
 <section class="">
     <div class="container px-4 px-lg-5 mt-5">
-        <h3>Điện thoại</h3>
+        <h3 class="text-info">@ViewBag.CompanyName</h3>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            @for (int i = 0; i < Math.Min(productsWithCategory1.Count, 8); i++)
-            {
-                var product = productsWithCategory1[i];
-
+            @foreach(var x in Model){
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
-                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@product.Id">
-                            <img class="card-img-top" src="/@product.ImageUrl" alt="..." />
+                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@x.Id">
+                            <img class="card-img-top" src="/@x.ImageUrl" alt="..." />
                         </a>
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- Product name-->
-                                <h5 class="fw-bolder">@product.Name</h5>
+                                <h5 class="fw-bolder">@x.Name</h5>
                                 <!-- Product price-->
-                            @Html.FormatValue(product.Price, "${0:#,##0}")
+                            @Html.FormatValue(x.Price, "${0:#,##0}")
                             </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
-                                <a class="addtocart btn btn-outline-dark mt-auto" data-productID="@product.Id" asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@product.Id">
+                                <a class="addtocart btn btn-outline-dark mt-auto" data-productID="@x.Id" asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@x.Id">
                                     Add To Cart
                                 </a>
                             </div>
@@ -123,78 +111,6 @@
                 </div>
             }
         </div>
-        <h3>Ipad</h3>
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            @for (int i = 0; i < Math.Min(productsWithCategory2.Count, 8); i++)
-            {
-                var product = productsWithCategory2[i];
-
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@product.Id">
-                            <img class="card-img-top" src="/@product.ImageUrl" alt="..." />
-                        </a>
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">@product.Name</h5>
-                                <!-- Product price-->
-                            @Html.FormatValue(product.Price, "${0:#,##0}")
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center">
-                                <a class="addtocart btn btn-outline-dark mt-auto" data-productID="@product.Id" asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@product.Id">
-                                    Add To Cart
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-        <h3>LapTop</h3>
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            @for (int i = 0; i < Math.Min(productsWithCategory3.Count, 8); i++)
-            {
-                var product = productsWithCategory3[i];
-
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@product.Id">
-                            <img class="card-img-top" src="/@product.ImageUrl" alt="..." />
-                        </a>
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">@product.Name</h5>
-                                <!-- Product price-->
-                            @Html.FormatValue(product.Price, "${0:#,##0}")
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center">
-                                <a class="addtocart btn btn-outline-dark mt-auto" data-productID="@product.Id" asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@product.Id">
-                                    Add To Cart
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+    
     </div>
 </section>
-
-<datalist id="categories">
-    @foreach (var x in Model.Select(m => m.Category.Name).Distinct())
-    {
-        <option value="@x"></option>
-    }
-</datalist>
